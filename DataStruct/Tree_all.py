@@ -22,6 +22,7 @@ def BFS(root, visited):
     if len(BFS_queue) > 0:
         BFS(BFS_queue.pop(0), visited)
 
+##Beware: inefficent implementation (h^2 ~ n^2)
 def printLevelOrder(root, level, toggle):
     if root == None:
         return
@@ -41,6 +42,7 @@ def levelOrder(root):
         print
         printLevelOrder(root,i,1)
 
+##Beware: inefficent implementation (h^2 ~ n^2)
 def spiralOrder(root):
     h = 3
     toggle = 0
@@ -51,6 +53,7 @@ def spiralOrder(root):
         else:
             toggle = 0
         printLevelOrder(root,i,toggle)
+
 
 def findPath(root, path, n):
     if root == None:
@@ -77,7 +80,6 @@ def LCA(root, n1, n2):
             continue
         else:
             return path1[i-1]
-            break
     return path1[i]
 
 def findNode(root, n):
@@ -109,14 +111,86 @@ def isMirror(root1, root2):
     return (root1.val == root2.val) and isMirror(root1.left, root2.right) and isMirror(root1.right, root2.left)
 
 BFS_Queue = []
-def BFS_Traversal(root):
+##Level order using BFS, (one queue for BFSQueue and the other for the solution).
+def levelOrder2(root,level,nodeList):
+    if root == None:
+        return
+    if len(nodeList) == level:
+        nodeList.append([])
+    nodeList[level].append(root.val)
+    BFS_Queue.append([root.left,level+1])
+    BFS_Queue.append([root.right,level+1])
+    if len(BFS_Queue) != 0:
+        node = BFS_Queue.pop(0)
+        return levelOrder2(node[0],node[1],nodeList)
+
+##Level order using DFS
+def levelOrder1(root,level,nodeList):
+    if root == None:
+        return
+    
+    if len(nodeList) == level:
+        nodeList.append([])
+
+    nodeList[level].append(root.val)
+    
+    levelOrder1(root.left,level+1,nodeList)
+    levelOrder1(root.right,level+1,nodeList)
+
+##Zigzag order using BFS in O(n)
+def zigZagOrder(root,level,nodeList):
+    if root == None:
+        return
+    
+    if len(nodeList) == level:
+        nodeList.append([])
+    
+    if level %2 == 0:
+        nodeList[level].append(root.val)
+    else:
+        nodeList[level].insert(0,(root.val))
+    
+    zigZagOrder(root.left,level+1,nodeList)
+    zigZagOrder(root.right,level+1,nodeList)
+
+##diagonal Traversal
+diagonalQ = []
+def diagonalTraversal(root):
     if root == None:
         return
     print root.val,
-    BFS_Queue.append(root.left)
-    BFS_Queue.append(root.right)
-    if len(BFS_Queue) != 0:
-        BFS_Traversal(BFS_Queue.pop(0))
+    diagonalQ.append(root.left)
+    diagonalTraversal(root.left)
+    diagonalQ.append(root.right)
+    diagonalTraversal(root.right)
+
+##Get maxWidth
+leftIndex = {}
+def getMaxWidth(root,level, pos):
+    if root == None:
+        return
+
+    if level not in leftIndex:
+        leftIndex[level] = pos
+        
+    return max(
+    getMaxWidth(root.left,level+1, 2*pos+1), 
+    getMaxWidth(root.right,level+1, 2*pos+2),
+    pos - leftIndex[level] + 1
+    )
+    
+
+##Get indexOf
+def indexOf(root,pos,target):
+    if root == None:
+        return
+    if pos == target:
+        print "{} at index {}".format(root.val,pos)
+        return
+    indexOf(root.left,2*pos+1,target)
+    indexOf(root.right,2*pos+2,target)
+    
+
 
 root = TreeNode(10)
 root.left = TreeNode(20)
@@ -128,63 +202,71 @@ root.right.right = TreeNode(50)
 root.left.left.left = TreeNode(29)
 root.left.left.right = TreeNode(42)
 
-####BFS(1)####
-print "\n\n***BFS(1)***"
-toggle = 0
-BFS_Traversal(root)
+# ####BFS and LevelOrder####
+# print "\n\n***levelOrder2 [O(n)]***"
+# toggle = 0
+# nodeList = []
+# levelOrder1(root,0,nodeList)
+# print nodeList
 
-####BFS####
-visited = {}
-BFS(root, visited)
-print "\n\n***BFS***"
-print BFS_List
+# ####zigZagOrder####
+# print "\n\n***zigZag Order***"
+# nodeList = []
+# zigZagOrder(root,0,nodeList)
+# print nodeList
 
-####LevelOrder####
-print "\n\n***Level Order***"
-levelOrder(root)
+####diagonaTraversal####
+print "\n\n***Diagonal Traversal***"
+diagonalTraversal(root)
 
-####SpiralOrder####
-print "\n\n***Spiral Order***"
-spiralOrder(root)
-
-####FindPath####
-print "\n\n***Path from root to 42***"
-path = []
-findPath(root, path, 42)
-print path
-
-####LCA####
-print "\n\n***LCA***"
-print LCA(root,40,50)
-
-####find a node####
-print "\n\n***find a node (400)***"
-print findNode(root, 400)
-print "\n\n***find a node (40)***"
-print findNode(root, 40)
-
-####find max sum path####
-print "\n\n***max sum path***"
-max_n = -1
-print findMaxSumPath(root, max_n)
-
-####check if the tree is symmetric (can also be extended to check if two trees are mirror are of each other)####
-root = TreeNode(1)
-root.left = TreeNode(2)
-root.right = TreeNode(3)
-root.left.left = TreeNode(3)
-root.left.right = TreeNode(4)
-root.right.left = TreeNode(4)
-root.right.right = TreeNode(3)
-
-root2 = TreeNode(1)
-root2.left = TreeNode(2)
-root2.right = TreeNode(3)
-root2.left.left = TreeNode(3)
-root2.left.right = TreeNode(4)
-root2.right.left = TreeNode(4)
-root2.right.right = TreeNode(3)
+####getIndex####
+print "\n\n***Nodes with index***"
+indexOf(root,0,6)
 
 
-print "\n\n***Is tree symmetric***"
-print isMirror(root, root2)
+####getMaxWidth####
+print "\n\n***Max Width***"
+print getMaxWidth(root,0, 0)
+
+
+# ####FindPath####
+# print "\n\n***Path from root to 42***"
+# path = []
+# findPath(root, path, 42)
+# print path
+
+# ####LCA####
+# print "\n\n***LCA***"
+# print LCA(root,40,50)
+
+# ####find a node####
+# print "\n\n***find a node (400)***"
+# print findNode(root, 400)
+# print "\n\n***find a node (40)***"
+# print findNode(root, 40)
+
+# ####find max sum path####
+# print "\n\n***max sum path***"
+# max_n = -1
+# print findMaxSumPath(root, max_n)
+
+# ####check if the tree is symmetric (can also be extended to check if two trees are mirror are of each other)####
+# root = TreeNode(1)
+# root.left = TreeNode(2)
+# root.right = TreeNode(3)
+# root.left.left = TreeNode(3)
+# root.left.right = TreeNode(4)
+# root.right.left = TreeNode(4)
+# root.right.right = TreeNode(3)
+
+# root2 = TreeNode(1)
+# root2.left = TreeNode(2)
+# root2.right = TreeNode(3)
+# root2.left.left = TreeNode(3)
+# root2.left.right = TreeNode(4)
+# root2.right.left = TreeNode(4)
+# root2.right.right = TreeNode(3)
+
+
+# print "\n\n***Is tree symmetric***"
+# print isMirror(root, root2)
