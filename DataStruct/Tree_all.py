@@ -189,7 +189,6 @@ def indexOf(root,pos,target):
         return
     indexOf(root.left,2*pos+1,target)
     indexOf(root.right,2*pos+2,target)
-    
 
 
 root = TreeNode(10)
@@ -216,17 +215,17 @@ root.left.left.right = TreeNode(42)
 # print nodeList
 
 ####diagonaTraversal####
-print "\n\n***Diagonal Traversal***"
-diagonalTraversal(root)
+# print "\n\n***Diagonal Traversal***"
+# diagonalTraversal(root)
 
-####getIndex####
-print "\n\n***Nodes with index***"
-indexOf(root,0,6)
+# ####getIndex####
+# print "\n\n***Nodes with index***"
+# indexOf(root,0,6)
 
 
-####getMaxWidth####
-print "\n\n***Max Width***"
-print getMaxWidth(root,0, 0)
+# ####getMaxWidth####
+# print "\n\n***Max Width***"
+# print getMaxWidth(root,0, 0)
 
 
 # ####FindPath####
@@ -270,3 +269,45 @@ print getMaxWidth(root,0, 0)
 
 # print "\n\n***Is tree symmetric***"
 # print isMirror(root, root2)
+
+
+class TreeNode2:
+    def __init__(self,val):
+        self.val = val
+        self.children = []
+
+##Get max length path
+maxPath = [0]
+
+def getMaxLengthPath(root, pathCount):
+    if root == None: 
+        return 1
+
+    maxPath[0] = max(pathCount, maxPath[0])
+
+    print root.val, maxPath[0]
+    for c in root.children:
+        if root.val == c.val:
+            getMaxLengthPath(c, pathCount+1)
+        else:
+            getMaxLengthPath(c, 0)
+
+
+root = TreeNode2(10)
+root.children.append(TreeNode2(20))
+root.children.append(TreeNode2(30))
+root.children.append(TreeNode2(40))
+
+root.children[0].children.append(TreeNode2(20))
+# root.children[1].children.append(TreeNode2(20))
+# root.children[1].children[0].children.append(TreeNode2(20))
+# root.children[1].children[0].children[0].children.append(TreeNode2(20))
+# root.children[1].children[0].children[0].children[0].children.append(TreeNode2(20))
+
+root.children[2].children.append(TreeNode2(20))
+root.children[2].children.append(TreeNode2(20))
+root.children[2].children[1].children.append(TreeNode2(20))
+root.children[2].children[1].children[0].children.append(TreeNode2(20))
+
+getMaxLengthPath(root,0)
+print maxPath[0]

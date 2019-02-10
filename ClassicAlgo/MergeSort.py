@@ -10,8 +10,8 @@ def merge(a,l,m,r):
     for i in range(0,n2):
         R[i] = a[m+1+i]
 
-    print "Left array {}" .format(L)
-    print "Right array {}" .format(R)
+    # print "Left array {}" .format(L)
+    # print "Right array {}" .format(R)
 
 
     i = 0
