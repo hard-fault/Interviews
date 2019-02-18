@@ -21,6 +21,13 @@ def rec(a,subset,i):
         subset[i] = a[i]
         rec(a,subset,i+1)
 
+##Simple and fast
+def subsets(self, nums):
+    result = [[]]
+    for num in nums:
+        result += [i + [num] for i in result]
+    return result
+
 a = [1,2,3]
 subset = [None]*len(a)
 rec(a,subset,0)
