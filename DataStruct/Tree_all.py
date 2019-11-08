@@ -194,6 +194,9 @@ def findIndex(root,index,target):
     return (leftSide or rightSide)
 
 
+##Next pointer must point to the inorder successor.
+def inorderReverse
+
 root = TreeNode(10)
 root.left = TreeNode(20)
 root.right = TreeNode(40)

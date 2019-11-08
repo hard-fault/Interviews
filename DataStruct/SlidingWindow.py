@@ -4,14 +4,14 @@ from collections import deque
 Tasks:
 
 Use deque to store the indices. 
-[such that index of the largest element in the window is stored in the front and the smallest's in rear]
+slidingwindow min/max -> [such that index of the smallest/largest element in the window is stored in the front]
 
 Inserting:
 insert all the indices that belong to a window.
 
 Remove:
 1) pop indices from the front that are out of the window.
-2) pop indices of the numbers that are smaller than the present number from the rear of the queue. (Note: smaller numbers are in rear)
+2) pop indices of the numbers that are smaller/larger than the present number from the rear of the queue.
 """
 def slidingWindowMax(nums,k):
     if nums == [] or k == 0 or k > len(nums):
