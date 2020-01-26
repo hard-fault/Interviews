@@ -193,9 +193,15 @@ def findIndex(root,index,target):
 
     return (leftSide or rightSide)
 
+##deepCopy
+def deepCopy(root):
+    oldNew = {}
+    BFSQueue = [root]
+    while BFSQueue:
+        node = BFSQueue.pop()
+
 
 ##Next pointer must point to the inorder successor.
-def inorderReverse
 
 root = TreeNode(10)
 root.left = TreeNode(20)
@@ -207,12 +213,12 @@ root.right.right = TreeNode(50)
 root.left.left.left = TreeNode(29)
 root.left.left.right = TreeNode(42)
 
-# ####BFS and LevelOrder####
-# print "\n\n***levelOrder2 [O(n)]***"
-# toggle = 0
-# nodeList = []
-# levelOrder1(root,0,nodeList)
-# print nodeList
+####BFS and LevelOrder####
+print "\n\n***levelOrder2 [O(n)]***"
+toggle = 0
+nodeList = []
+levelOrder1(root,0,nodeList)
+print nodeList
 
 # ####zigZagOrder####
 # print "\n\n***zigZag Order***"
@@ -225,8 +231,8 @@ root.left.left.right = TreeNode(42)
 # diagonalTraversal(root)
 
 ####getIndex####
-print "\n\n***Nodes with index***"
-print findIndex(root,1,0)
+# print "\n\n***Nodes with index***"
+# print findIndex(root,1,0)
 
 
 # ####getMaxWidth####

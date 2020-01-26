@@ -19,6 +19,17 @@ class Graph:
         #Traverse the graph
         self._traverseGraph(startNodes)
     
+    def _traverseGraph(self, nodes):
+        print("\nDFS:")
+        for n in nodes:
+            visited = {n}
+            self._DFS(n, visited)
+
+        print("\nBFS:")
+        for n in nodes:
+            visited = {n}
+            self._BFS(n, visited)
+    
     def _DFS(self, node, visited):
         print(node)
         neighbors = self.graph[node]
@@ -39,17 +50,6 @@ class Graph:
         
         if self.BFSQueue:
             self._BFS(self.BFSQueue.pop(0), visited)
-    
-    def _traverseGraph(self, nodes):
-        print("\nDFS:")
-        for n in nodes:
-            visited = {n}
-            self._DFS(n, visited)
-
-        print("\nBFS:")
-        for n in nodes:
-            visited = {n}
-            self._BFS(n, visited)
             
     def _shortestPath(self, source, dest):
         pathLength = 0
